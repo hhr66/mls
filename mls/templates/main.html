@@ -1,0 +1,54 @@
+{% include 'basenew.html' %}
+<SCRIPT type="text/javascript">
+$(document).ready(function(){
+    $("#hostList").multipleSelect({
+        placeholder: "请选择主机",
+        filter: true,
+    });
+    $('#exec').click(function(){
+        var cmd = $('#cmd').val();
+        var hosts= $("#hostList").multipleSelect("getSelects");
+        var hosts = hosts.join();
+        $.post("/saltcmd", {"hosts":hosts,"cmd":cmd}, function(json){ 
+            var obj = $("#data");
+            value = "";
+            for(k in json.data){
+                ret = json.data[k].replace(/\n/g,"<br/>");
+                value = value + "#######" + k + "#######" +"<br>"+ ret +"<br>";
+            }
+            obj.html(json.execerr + "<br>" + value);
+        },"json");
+    });
+});
+</SCRIPT>
+
+</head>
+<body>
+    <div class="wrapper">
+    <div id="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+            Dashboard
+            <small>Control panel</small>
+          </h1>
+          <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Dashboard</li>
+          </ol>
+        </section>
+</div>
+<div>
+<select id="hostList" multiple="multiple">
+{% for k in hosts %}
+    <option value="{{k}}.meilishuo.com">{{k}}</option>
+{% endfor %}
+</select>
+<input id="cmd" type="text" width="800px" placeholder="date">
+<button id="exec" class="btn btn-default" type="submit" style="margin-top:-10px;">执行</button>
+</div>
+<span id="ginfo"></span> <span id="errors" style="color:red"></span>
+<div id="data" class="exportBox">
+</div>
+</body>
+</html>

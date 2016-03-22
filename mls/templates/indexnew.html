@@ -1,0 +1,144 @@
+{% include 'basenew.html' %}
+<SCRIPT type="text/javascript">
+function clickNode(treeid) {
+    $("#treeid").val(treeid);
+    changeMain();
+}
+function clickMode(modename) {
+    $("#modename").val(modename);
+    changeMain();
+}
+function changeMain() {
+    modename = $("#modename").val();
+    treeid = $("#treeid").val();
+    $.get("/updatemain", {"modename":modename,"treeid":treeid}, function(data){
+    if (data == 'ok') {
+        url = "/" + modename + "?treeid=" + treeid;
+        $('#Frame_main').attr("src",url);
+    } else {
+       window.location.reload();
+    }
+    });
+}
+</SCRIPT>
+</head>
+  <body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+
+      <header class="main-header">
+        <!-- Logo -->
+        <a href="index2.html" class="logo">
+          <!-- mini logo for sidebar mini 50x50 pixels -->
+          <span class="logo-mini"><b>MLS</b></span>
+          <!-- logo for regular state and mobile devices -->
+          <span class="logo-lg"><b>Admin</b>MLS</span>
+        </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top" role="navigation">
+          <!-- Sidebar toggle button-->
+          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+          </a>
+          <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+              <!-- User Account: style can be found in dropdown.less -->
+              <li class="dropdown user user-menu">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <img src="/static/AdminLTE-2.3.0/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                  <span class="hidden-xs">{{ userzhname }}</span>
+                </a>
+                <ul class="dropdown-menu">
+                  <!-- User image -->
+                  <li class="user-header">
+                    <img src="/static/AdminLTE-2.3.0/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                    <p>
+                      OP
+                      <small>管理员</small>
+                    </p>
+                  </li>
+                  <!-- Menu Footer-->
+                  <li class="user-footer">
+                    <div class="pull-left">
+                      <a href="admin" class="btn btn-default btn-flat">后台中心</a>
+                    </div>
+                    <div class="pull-right">
+                      <a href="logout" class="btn btn-default btn-flat">退出</a>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+              <!-- Control Sidebar Toggle Button -->
+            </ul>
+          </div>
+        </nav>
+      </header>
+      <!-- Left side column. contains the logo and sidebar -->
+      <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+          <!-- sidebar menu: : style can be found in sidebar.less -->
+          <ul class="sidebar-menu">
+            <li class="active treeview">
+              <a href="/">
+                <i class="fa fa-dashboard"></i> <span>Dashboard</span></i>
+              </a>
+            </li>
+            <li class="treeview">
+              <a href="#"><i class="fa fa-share"></i> <span>产品服务</span><i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li>
+                    <a href="#"><i class="fa fa-circle-o"></i>主机管理<i class="fa fa-angle-left pull-right"></i></a>
+                    <ul class="treeview-menu">
+                        <li><a href="#" onclick="clickMode('hostlist');"><i class="fa fa-circle-o"></i>主机列表</a></li>
+                        <li><a href="#" onclick="clickMode('hostmount');"><i class="fa fa-circle-o"></i>主机挂载</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" onclick="clickMode('role');"><i class="fa fa-circle-o"></i>角色权限管理</a></li>
+              </ul>
+            </li>
+          <!-- search form -->
+          <form action="#" method="get" class="sidebar-form">
+            <div class="input-group">
+              <input type="text" name="q" class="form-control" placeholder="Search...">
+              <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+              </span>
+            </div>
+          </form>
+          <!-- /.search form -->
+            <li>
+              <iframe width="100%"  height="1000"  style='background-color: #DFDFDF;' frameborder="0" scrolling="no" src="/mtree" id="Frame_mtree"></iframe>
+            </li>
+          </ul>
+        </section>
+        <!-- /.sidebar -->
+      </aside>
+
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Main content -->
+        <section class="content">
+          <!-- Main row -->
+          <div class="row">
+          </div><!-- /.row (main row) -->
+          <iframe width="100%"  height="1000"  style='' frameborder="0" scrolling="no" src="/{{modename}}?treeid={{treeid}}" id="Frame_main">
+          </iframe>
+        </section><!-- /.content -->
+      </div><!-- /.content-wrapper -->
+
+      <!-- Add the sidebar's background. This div must be placed
+           immediately after the control sidebar -->
+      <div class="control-sidebar-bg"></div>
+    </div><!-- ./wrapper -->
+<div id="rMenu">
+    <ul>
+        <li id="m_add" onclick="addTreeNode();">增加节点</li>
+        <li id="m_del" onclick="removeTreeNode();">删除节点</li>
+        <li id="m_reset" onclick="resetTree();">恢复zTree</li>
+    </ul>
+</div>
+<input type="hidden" id="treeid" value="{{ treeid }}">
+<input type="hidden" id="modename" value="{{ modename }}">
+  </body>
+</html>

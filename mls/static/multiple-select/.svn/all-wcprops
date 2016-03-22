@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/repos/!svn/ver/422824/ops/cms/trunk/online/static/multiple-select
+END
+multiple-select.css
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/repos/!svn/ver/422824/ops/cms/trunk/online/static/multiple-select/multiple-select.css
+END
+LICENSE
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/repos/!svn/ver/422824/ops/cms/trunk/online/static/multiple-select/LICENSE
+END
+jquery.multiple.select.js
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/!svn/ver/422824/ops/cms/trunk/online/static/multiple-select/jquery.multiple.select.js
+END
+.gitignore
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/repos/!svn/ver/422824/ops/cms/trunk/online/static/multiple-select/.gitignore
+END
+CHANGELOG.md
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/repos/!svn/ver/422824/ops/cms/trunk/online/static/multiple-select/CHANGELOG.md
+END
+bower.json
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/repos/!svn/ver/422824/ops/cms/trunk/online/static/multiple-select/bower.json
+END
+index.html
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/repos/!svn/ver/422824/ops/cms/trunk/online/static/multiple-select/index.html
+END
+multiple-select.png
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/repos/!svn/ver/422824/ops/cms/trunk/online/static/multiple-select/multiple-select.png
+END
+CONTRIBUTORS.md
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/repos/!svn/ver/422824/ops/cms/trunk/online/static/multiple-select/CONTRIBUTORS.md
+END
+README.md
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/repos/!svn/ver/422824/ops/cms/trunk/online/static/multiple-select/README.md
+END
+multiple-select.jquery.json
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/repos/!svn/ver/422824/ops/cms/trunk/online/static/multiple-select/multiple-select.jquery.json
+END

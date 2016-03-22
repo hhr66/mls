@@ -1,0 +1,50 @@
+{% include 'base.html' %}
+<SCRIPT type="text/javascript">
+$(document).ready(function(){
+    $("#hostList").multipleSelect({
+        placeholder: "请选择主机",
+        filter: true,
+    });
+});
+</SCRIPT>
+
+</head>
+
+<body>
+    <div id="wrapper">
+        <!-- Navigation -->
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<thead>
+  <tr>
+    <th align="left" valign="middle" width="10%"><p>主机名</p></th>
+    <th align="left" valign="middle" width="8%">IP</th>
+  </tr>
+</thead>
+<tbody>
+<div>
+<select id="hostList" multiple="multiple">
+{% for k in hosts %}
+    <option value="{{k}}">{{k}}</option>
+{% endfor %}
+</select>
+<input type="text" width="800px" placeholder="date">
+<button id="sub" class="btn btn-default" type="submit" style="margin-top:-10px;">执行</button>
+</div>
+<span id="ginfo"></span> <span id="errors" style="color:red"></span>
+<div id="data" class="exportBox">
+{% load pagination_tags %}
+{% autopaginate data 10 %}
+{% for k,v in data %}
+  <tr>
+    <td align="left" valign="middle"><p>{{ k }}</p></td>
+    <td align="left" valign="middle"><p>{{ v }}</p></td>
+  </tr>
+{% endfor %}
+</tbody>
+</table>
+{% paginate %}
+    </div>
+    <!-- /#wrapper -->
+</body>
+
+</html>

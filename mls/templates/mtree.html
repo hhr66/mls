@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+<TITLE> ZTREE DEMO - select menu</TITLE>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="/static/zTree_v3/css/demo.css" type="text/css">
+<link rel="stylesheet" href="/static/zTree_v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
+<script type="text/javascript" src="/static/zTree_v3/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="/static/zTree_v3/js/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="/static/zTree_v3/js/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript" src="/static/zTree_v3/js/jquery.ztree.exedit-3.5.js"></script>
+<style type="text/css">
+div#rMenu {position:absolute; visibility:hidden; top:0; background-color: #555;text-align: left;padding: 2px;}
+div#rMenu ul li{
+    margin: 1px 0;
+    padding: 0 5px;
+    cursor: pointer;
+    list-style: none outside none;
+    background-color: #DFDFDF;
+}
+</style>
+<SCRIPT type="text/javascript">
+var setting = {
+    data: {
+        simpleData: {
+            enable: true
+        }
+    },
+    edit: {
+        drag: {
+            {% if not issupper %} isMove : false,{% endif %}
+            isCopy : false,
+            prev : false,
+            //inner : true,
+            next : false,
+        },
+        enable: true,
+        showRemoveBtn: false,
+        showRenameBtn: false
+    },
+    callback: {
+        onClick: onClick,
+        onRightClick: OnRightClick,
+        onRename: onRename,
+        beforeDrag: beforeDrag,
+        beforeDrop: beforeDrop
+    }
+};
+
+function onClick(event, treeId, treeNode, clickFlag) {
+    //$.get("/updatemain", {"treeid":treeNode.id}, function(data){
+    window.parent.clickNode(treeNode.id); 
+    //$('#Frame_mfMain').attr("src",url);
+    //});
+};
+
+function OnRightClick(event, treeId, treeNode) {
+    if (!treeNode && event.target.tagName.toLowerCase() != "button" && $(event.target).parents("a").length == 0) {
+        zTree.cancelSelectedNode();
+    } else if (treeNode && treeNode.showid == 1) {
+        zTree.selectNode(treeNode);
+        showRMenu("root", event.clientX, event.clientY);
+    } else if (treeNode && treeNode.showid == 2) {
+        zTree.selectNode(treeNode);
+        showRMenu("node", event.clientX, event.clientY);
+    }
+}
+
+function showRMenu(type, x, y) {
+    $("#rMenu ul").show();
+    if (type=="root") {
+        $("#m_add").hide();
+    } else {
+        $("#m_add").show();
+    }
+    rMenu.css({"top":y+"px", "left":x+"px", "visibility":"visible"});
+    $("body").bind("mousedown", onBodyMouseDown);
+}
+
+function hideRMenu() {
+    if (rMenu) rMenu.css({"visibility": "hidden"});
+    $("body").unbind("mousedown", onBodyMouseDown);
+}
+
+function onBodyMouseDown(event){
+    if (!(event.target.id == "rMenu" || $(event.target).parents("#rMenu").length>0)) {
+        rMenu.css({"visibility" : "hidden"});
+    }
+}
+
+function addTreeNode() {
+    hideRMenu();
+    var name = prompt("请输入节点名","");
+    if (name) {
+    if (zTree.getSelectedNodes()[0]) {
+        pid = zTree.getSelectedNodes()[0].id;
+        $.getJSON("/addnode", {"zh_name":name,'pid':pid}, function(json){
+            var newNode = {id:json.id, name:name,showid:json.showid};
+            newNode.checked = zTree.getSelectedNodes()[0].checked;
+            zTree.addNodes(zTree.getSelectedNodes()[0], newNode);
+        });
+    } else {
+        alert('未选中节点');
+        //zTree.addNodes(null, newNode);
+    }
+    }
+}
+
+function removeTreeNode() {
+    hideRMenu();
+    var nodes = zTree.getSelectedNodes();
+    var treeid = nodes[0].id;
+    if (nodes && nodes.length>0) {
+        if (nodes[0].children && nodes[0].children.length > 0) {
+            var msg = "确认要删除父节点？如果删除将连同子节点将被一起删掉。";
+            if (confirm(msg)==true){
+                $.get("/delnode", {"treeid":treeid,'pnode':1}, function(json){
+                    if(json=='ok'){
+                        zTree.removeNode(nodes[0]);
+                    }else {
+                        alert('子节点下有挂载机器不能删除!')
+                    }
+                });
+            }
+        } else {
+            $.get("/delnode", {"treeid":treeid}, function(json){
+                zTree.removeNode(nodes[0]);
+            });
+        }
+
+    }
+}
+
+function onRename(event, treeId, treeNode, isCancel) {
+    $.get("/editnode", {"treeid":treeNode.id,'name':treeNode.name}, function(json){
+    });
+}
+
+function edit() {
+    hideRMenu();
+    nodes = zTree.getSelectedNodes(),
+    treeNode = nodes[0];
+    if (nodes.length == 0) {
+        alert("请先选择一个节点");
+        return;
+    }
+    zTree.editName(treeNode);
+}
+
+function beforeDrag(treeId, treeNodes) {
+    for (var i=0,l=treeNodes.length; i<l; i++) {
+        if (treeNodes[i].drag === false) {
+            return false;
+        }
+    }
+    return true;
+}
+function beforeDrop(treeId, treeNodes, targetNode, moveType) {
+    $.get("/dropnode",{'treeid':treeNodes[0].id,'dtreeid':targetNode.id},function(json){
+    });
+    return targetNode ? targetNode.drop !== false : true;
+}
+
+    var zTree, rMenu;
+    var zNodes = {% autoescape off %} {{ zNodes }} {% endautoescape %}; 
+    $(document).ready(function(){
+    zTree = $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+    var node = zTree.getNodeByParam("id",{{treeid}});
+    rMenu = $("#rMenu");
+    zTree.selectNode(node);
+});
+</SCRIPT>
+</HEAD>
+
+<BODY>
+    <div class="zTreeDemoBackground left">
+        <ul id="treeDemo" class="ztree"></ul>
+    </div>
+<div id="rMenu">
+    <ul>
+        <li id="m_add" onclick="addTreeNode();">增加节点</li>
+        <li id="edit" onclick="edit();">修改节点</li>
+        <li id="m_del" onclick="removeTreeNode();">删除节点</li>
+    </ul>
+</div>
+</BODY>
+</HTML>

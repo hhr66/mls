@@ -1,0 +1,53 @@
+{% include 'basenew.html' %}
+<SCRIPT type="text/javascript">
+$(document).ready(function(){
+    $('#example').DataTable( {
+        "ajax": '/ajax_host'
+    } );
+});
+</SCRIPT>
+
+</head>
+<body>
+<div class="wrapper">
+    <div id="content-wrapper">
+        <section class="content-header">
+        <h1>主机管理</h1>
+          <ol class="breadcrumb">
+            <li>当前节点位置: {{nodepath}}</li>
+          </ol>
+        </section>
+        <!-- Main content -->
+        <section class="content">
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#">主机列表</a></li>
+                  <li><a href="#" onclick="javascript:window.parent.clickMode('hostmount');">主机挂载</a></li>
+                </ul>
+                </div><!-- /.tab-content -->
+<table id="example" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>ip</th>
+                <th>hostname</th>
+                <th>saltid</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>ip</th>
+                <th>hostname</th>
+                <th>saltid</th>
+            </tr>
+        </tfoot>
+    </table>
+              </div><!-- /.nav-tabs-custom -->
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+        </section><!-- /.content -->
+    </div>
+</div>
+</body>
+</html>
