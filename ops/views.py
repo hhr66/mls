@@ -185,7 +185,6 @@ def saltcmd(request):
     token = content['return'][0]['token']
     headers = {'X-Auth-Token'   : token}
     params = {'tgt':hosts,'client':'local','fun':'cmd.run','arg':cmd,'expr_form':'list'}
-    #params = {'tgt':'yz-seo-01.meilishuo.com,yz-snake-01.meilishuo.com','client':'local','fun':'cmd.run','arg':'date','expr_form':'list'}
     encode = urllib.urlencode(params)
     obj = urllib.unquote(encode)
     req = urllib2.Request(api_url, obj, headers)
@@ -212,7 +211,7 @@ def updatemain(request):
 
 def login(request):
     #定义SPEED API接口相关信息
-    api_host = "http://api.speed.meilishuo.com"
+    api_host = "http://api.speed.hhrtest.com"
     app_key = "100099"
     callback_url = "http://mls.main.meiliworks.com/speedcallback"
     url = "/oauth/authorize?client_id=" + app_key + "&response_type=code&redirect_uri=" + callback_url
@@ -230,7 +229,7 @@ def speedcallback(request):
     #获取SPEED API返回的CODE值
     code = request.GET.get('code',)
     #定义SPEED API接口相关信息
-    api_host = "http://api.speed.meilishuo.com"
+    api_host = "http://api.speed.hhrtest.com"
     #获取授权过的Access Token的URL
     url = "/oauth/access_token"
     app_key = "100099"
